@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ZodObject } from 'zod';
 import { getErrorsFormatted } from '../helpers';
-import { FormSubmitHandler, fieldsValidationOptions } from '../interfaces';
+import { FormSubmitHandler, FieldsValidationOptions } from '../interfaces';
 
 export const useForm = <T>(initialForm: T, schema: ZodObject<any>) => {
   const [formState, setFormState] = useState<T>(initialForm);
@@ -11,7 +11,7 @@ export const useForm = <T>(initialForm: T, schema: ZodObject<any>) => {
     formValues,
     currentField,
     onSubmit,
-  }: fieldsValidationOptions<T>) => {
+  }: FieldsValidationOptions<T>) => {
     const result = schema.safeParse(formValues);
 
     if (!result.success) {
