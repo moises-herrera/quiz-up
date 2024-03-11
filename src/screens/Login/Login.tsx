@@ -18,6 +18,7 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
     formState: { email, password },
     errors,
     onInputChange,
+    onBlur,
     handleSubmit,
   } = useForm<LoginSchemaType>(initialForm, LoginSchema);
 
@@ -39,6 +40,7 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
             type="email-address"
             value={email}
             onChange={onInputChange}
+            onBlur={onBlur}
             hasError={!!errors?.email}
           />
         </FormControl>
@@ -48,6 +50,7 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
             id="password"
             value={password}
             onChange={onInputChange}
+            onBlur={onBlur}
             hasError={!!errors?.password}
           />
         </FormControl>

@@ -6,6 +6,7 @@ interface InputProps {
   id: string;
   value?: string;
   onChange: (id: string, value: string) => void;
+  onBlur?: (id: string) => void;
   type?: KeyboardTypeOptions;
   style?: TextInput['props']['style'];
   autoCapitalize?: TextInput['props']['autoCapitalize'];
@@ -16,6 +17,7 @@ export const Input: FC<InputProps> = ({
   id,
   value = '',
   onChange,
+  onBlur,
   type,
   style = styles.input,
   autoCapitalize = 'none',
@@ -27,6 +29,7 @@ export const Input: FC<InputProps> = ({
       nativeID={id}
       value={value}
       onChangeText={(value) => onChange(id, value)}
+      onBlur={() => onBlur && onBlur(id)}
       keyboardType={type}
       secureTextEntry={id === 'password'}
       style={[style, hasError && styles.errorInput]}
