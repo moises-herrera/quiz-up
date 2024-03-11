@@ -1,36 +1,50 @@
 import { useState } from 'react';
 import { ZodObject } from 'zod';
 import { getErrorsFormatted } from '../helpers';
+import { FormSubmitHandler, fieldsValidationOptions } from '../interfaces';
 
 export const useForm = <T>(initialForm: T, schema: ZodObject<any>) => {
   const [formState, setFormState] = useState<T>(initialForm);
-  const [errors, setErrors] = useState<{
-    [key: string]: string;
-  } | null>(null);
+  const [errors, setErrors] = useState<Record<keyof T, string> | null>(null);
 
-  const onInputChange = (name: string, value: string) => {
-    setFormState((prev) => <T>{ ...prev, [name]: value });
-    const result = schema.safeParse(formState);
+  const validateFields = ({
+    formValues,
+    currentField,
+    onSubmit,
+  }: fieldsValidationOptions<T>) => {
+    const result = schema.safeParse(formValues);
+
     if (!result.success) {
-      const errorsFormatted = getErrorsFormatted(result.error, name);
+      const errorsFormatted = getErrorsFormatted<T>(result.error, currentField);
       setErrors({
         ...errors,
         ...errorsFormatted,
       });
-    } else {
-      setErrors(null);
+      return;
     }
+
+    setErrors(null);
+    onSubmit && onSubmit(formValues);
   };
 
-  const handleSubmit = (onSubmit: (values: T) => void) => {
-    const result = schema.safeParse(formState);
-    if (!result.success) {
-      const errorsFormatted = getErrorsFormatted(result.error);
-      setErrors(errorsFormatted);
-    } else {
-      setErrors(null);
-      onSubmit(formState);
-    }
+  const onInputChange = (name: string, value: string) => {
+    const newFormState: T = { ...formState, [name]: value };
+    setFormState(newFormState);
+    validateFields({
+      formValues: newFormState,
+      currentField: name as keyof T,
+    });
+  };
+
+  const onBlur = (name: string) => {
+    validateFields({
+      formValues: formState,
+      currentField: name as keyof T,
+    });
+  };
+
+  const handleSubmit = (onSubmit: FormSubmitHandler<T>) => {
+    validateFields({ formValues: formState, onSubmit });
   };
 
   const onResetForm = (): void => {
@@ -41,6 +55,7 @@ export const useForm = <T>(initialForm: T, schema: ZodObject<any>) => {
     formState,
     errors,
     onInputChange,
+    onBlur,
     handleSubmit,
     onResetForm,
   };
