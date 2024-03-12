@@ -2,9 +2,12 @@ import { FC } from 'react';
 import { Text, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Input, FormControl, WrapperBase } from '../../components/ui';
-import { useForm } from '../../hooks';
+import { useAppDispatch, useForm } from '../../hooks';
 import { LoginSchema, LoginSchemaType } from '../../schemas/auth';
 import { styles } from './styles';
+import { FormSubmitHandler } from '../../interfaces';
+import { useLoginUserMutation } from '../../services';
+import { setCredentials } from '../../redux/auth';
 
 interface LoginProps extends StackScreenProps<any, any> {}
 
@@ -21,10 +24,12 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
     onBlur,
     handleSubmit,
   } = useForm<LoginSchemaType>(initialForm, LoginSchema);
+  const dispatch = useAppDispatch();
+  const [login, { isLoading }] = useLoginUserMutation();
 
-  const onSubmit = () => {
-    console.log({ email, password });
-    console.log(errors);
+  const onSubmit: FormSubmitHandler<LoginSchemaType> = async (data) => {
+    const user = await login(data).unwrap();
+    dispatch(setCredentials(user));
   };
 
   return (
@@ -51,11 +56,32 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
             value={password}
             onChange={onInputChange}
             onBlur={onBlur}
+            secureTextEntry={true}
             hasError={!!errors?.password}
           />
         </FormControl>
 
-        <Button onPress={() => handleSubmit(onSubmit)} label="Login" />
+        <Button
+          onPress={() => handleSubmit(onSubmit)}
+          label="Login"
+          isLoading={isLoading}
+        />
+
+        <View>
+          <Text
+            style={{
+              textAlign: 'center',
+            }}
+          >
+            ¿No tienes una cuenta?{' '}
+            <Text
+              style={styles.link}
+              onPress={() => navigation.navigate('Login')}
+            >
+              Regístrate
+            </Text>
+          </Text>
+        </View>
       </View>
     </WrapperBase>
   );

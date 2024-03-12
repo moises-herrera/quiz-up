@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../theme';
 
 export const styles = StyleSheet.create({
   title: {
@@ -22,5 +23,11 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     gap: 14,
+  },
+  link: {
+    color: colors.primary,
+    textAlign: 'center',
+    marginTop: 14,
+    fontWeight: 'bold',
   },
 });
