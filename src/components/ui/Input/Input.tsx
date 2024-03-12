@@ -10,6 +10,7 @@ interface InputProps {
   type?: KeyboardTypeOptions;
   style?: TextInput['props']['style'];
   autoCapitalize?: TextInput['props']['autoCapitalize'];
+  secureTextEntry?: boolean;
   hasError?: boolean;
 }
 
@@ -21,6 +22,7 @@ export const Input: FC<InputProps> = ({
   type,
   style = styles.input,
   autoCapitalize = 'none',
+  secureTextEntry = false,
   hasError = false,
 }) => {
   return (
@@ -31,7 +33,7 @@ export const Input: FC<InputProps> = ({
       onChangeText={(value) => onChange(id, value)}
       onBlur={() => onBlur && onBlur(id)}
       keyboardType={type}
-      secureTextEntry={id === 'password'}
+      secureTextEntry={secureTextEntry}
       style={[style, hasError && styles.errorInput]}
       autoCapitalize={autoCapitalize}
     />
