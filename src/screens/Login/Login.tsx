@@ -76,7 +76,7 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
             ¿No tienes una cuenta?{' '}
             <Text
               style={styles.link}
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.navigate('Register')}
             >
               Regístrate
             </Text>
