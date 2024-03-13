@@ -2,6 +2,8 @@ import { FC } from 'react';
 import { Text, View } from 'react-native';
 import { toastStyles } from './styles';
 import { ToastMessage } from '../../../interfaces';
+import { Ionicons } from '@expo/vector-icons';
+import { colors } from '../../../theme';
 
 interface ToastProps {
   message: string;
@@ -10,10 +12,16 @@ interface ToastProps {
 }
 
 export const Toast: FC<ToastProps> = ({ message, type, onClose }) => {
+  const styles = toastStyles[type];
+  const iconName = type === 'success' ? 'checkmark' : 'close-circle-outline';
+  const iconColor =
+    type === 'success' ? colors.success.primary : colors.error.primary;
+
   return (
-    <View style={toastStyles[type].container}>
-      <View style={toastStyles[type].messageContainer}>
-        <Text style={toastStyles[type].text}>{message}</Text>
+    <View style={styles.container}>
+      <View style={styles.messageContainer}>
+        <Ionicons name={iconName} size={24} color={iconColor} />
+        <Text style={styles.text}>{message}</Text>
       </View>
     </View>
   );
