@@ -19,12 +19,15 @@ const baseStyles = StyleSheet.create({
     height: '100%',
     display: 'flex',
     flexDirection: 'row',
-    gap: 10,
-    paddingLeft: 16,
+    gap: 6,
+    paddingLeft: 14,
     justifyContent: 'flex-start',
     alignItems: 'center',
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
+  },
+  text: {
+    width: '75%',
   },
 });
 
@@ -40,6 +43,7 @@ export const toastStyles: ToastStyles = {
       backgroundColor: colors.success.secondary,
     },
     text: {
+      ...baseStyles.text,
       color: colors.success.primary,
     },
   },
@@ -54,6 +58,7 @@ export const toastStyles: ToastStyles = {
       backgroundColor: colors.error.secondary,
     },
     text: {
+      ...baseStyles.text,
       color: colors.error.primary,
     },
   },

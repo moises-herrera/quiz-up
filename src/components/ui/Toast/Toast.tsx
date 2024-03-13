@@ -21,7 +21,8 @@ export const Toast: FC<ToastProps> = ({ message, type, onClose }) => {
     <View style={styles.container}>
       <View style={styles.messageContainer}>
         <Ionicons name={iconName} size={24} color={iconColor} />
-        <Text style={styles.text}>{message}</Text>
+        <Text style={styles.text} numberOfLines={2}>{message}</Text>
+        <Ionicons name="close" size={24} color={iconColor} />
       </View>
     </View>
   );
