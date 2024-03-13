@@ -3,5 +3,12 @@ export const colors = {
   secondary: '#fff',
   text: '#000',
   accent: '#000',
-  error: '#f56565',
+  error: {
+    primary: '#ff5757',
+    secondary: '#fdedec',
+  },
+  success: {
+    primary: '#20aa7d',
+    secondary: '#eaf9f3',
+  },
 };
