@@ -1,57 +1,60 @@
 import { StyleSheet } from 'react-native';
+import { ToastStyles } from '../../../interfaces';
+import { colors } from '../../../theme';
 
 const baseStyles = StyleSheet.create({
   container: {
     position: 'absolute',
     bottom: 20,
     right: 40,
-    width: '80%',
+    width: '100%',
     height: 72,
     backgroundColor: 'black',
+    borderRadius: 8,
+    borderLeftWidth: 6,
+  },
+  messageContainer: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
     display: 'flex',
     flexDirection: 'row',
     gap: 10,
     paddingLeft: 16,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    borderRadius: 8,
-    borderLeftWidth: 6,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
   },
 });
 
-export const toastStyles: {
-  success: {
-    container: StyleSheet.NamedStyles<unknown>;
-    text: StyleSheet.NamedStyles<unknown>;
-  };
-  error: {
-    container: StyleSheet.NamedStyles<unknown>;
-    text: StyleSheet.NamedStyles<unknown>;
-  };
-} = {
+export const toastStyles: ToastStyles = {
   success: {
     container: {
       ...baseStyles.container,
-      backgroundColor: '#eaf9f3',
-      borderLeftColor: '#20aa7d',
+      backgroundColor: colors.success.secondary,
+      borderLeftColor: colors.success.primary,
+    },
+    messageContainer: {
+      ...baseStyles.messageContainer,
+      backgroundColor: colors.success.secondary,
     },
     text: {
-      color: '#20aa7d',
+      color: colors.success.primary,
     },
   },
   error: {
     container: {
       ...baseStyles.container,
-      backgroundColor: '#fdedec',
-      borderLeftColor: '#ff5757',
+      backgroundColor: colors.error.secondary,
+      borderLeftColor: colors.error.primary,
+    },
+    messageContainer: {
+      ...baseStyles.messageContainer,
+      backgroundColor: colors.error.secondary,
     },
     text: {
-      color: '#ff5757',
+      color: colors.error.primary,
     },
   },
-};
-
-export const styles: Record<keyof typeof toastStyles, any> = {
-  success: toastStyles.success,
-  error: toastStyles.error,
 };
