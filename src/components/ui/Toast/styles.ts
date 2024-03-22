@@ -1,20 +1,23 @@
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { ToastStyles } from '../../../interfaces';
 import { colors } from '../../../theme';
 
-const baseStyles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    bottom: 20,
-    right: 40,
+export const baseStyles = StyleSheet.create({
+  mainContainer: {
     width: '100%',
+    bottom: StatusBar.currentHeight || 0,
+    left: 0,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  container: {
+    width: 320,
     height: 72,
-    backgroundColor: 'black',
     borderRadius: 8,
     borderLeftWidth: 6,
   },
   messageContainer: {
-    position: 'relative',
     width: '100%',
     height: '100%',
     display: 'flex',
