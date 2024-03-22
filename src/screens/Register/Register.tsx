@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Input, FormControl, WrapperBase } from '../../components/ui';
@@ -8,6 +8,7 @@ import { styles } from './styles';
 import type { FormSubmitHandler } from '../../interfaces';
 import { useRegisterUserMutation } from '../../services';
 import { setCredentials } from '../../redux/auth';
+import { displayToast } from '../../redux/ui';
 
 interface RegisterProps extends StackScreenProps<any, any> {}
 
@@ -36,7 +37,31 @@ export const Register: FC<RegisterProps> = ({ navigation }) => {
     handleSubmit,
   } = useForm<SignUpSchemaType>(initialForm, SignUpSchema);
   const dispatch = useAppDispatch();
-  const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const [registerUser, { isLoading, isSuccess, isError }] =
+    useRegisterUserMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(
+        displayToast({
+          message: 'Usuario registrado correctamente',
+          type: 'success',
+        })
+      );
+      navigation.navigate('Login');
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      dispatch(
+        displayToast({
+          message: 'Error al registrar el usuario',
+          type: 'error',
+        })
+      );
+    }
+  }, [isError]);
 
   const onSubmit: FormSubmitHandler<SignUpSchemaType> = async (data) => {
     const user = await registerUser(data).unwrap();
