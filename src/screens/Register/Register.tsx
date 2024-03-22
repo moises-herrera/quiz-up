@@ -48,7 +48,7 @@ export const Register: FC<RegisterProps> = ({ navigation }) => {
           type: 'success',
         })
       );
-      navigation.navigate('Login');
+      navigation.navigate('Home');
     }
   }, [isSuccess]);
 

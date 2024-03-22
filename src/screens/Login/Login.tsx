@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Button, Input, FormControl, WrapperBase } from '../../components/ui';
@@ -8,6 +8,7 @@ import { styles } from './styles';
 import { FormSubmitHandler } from '../../interfaces';
 import { useLoginUserMutation } from '../../services';
 import { setCredentials } from '../../redux/auth';
+import { displayToast } from '../../redux/ui';
 
 interface LoginProps extends StackScreenProps<any, any> {}
 
@@ -25,7 +26,24 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
     handleSubmit,
   } = useForm<LoginSchemaType>(initialForm, LoginSchema);
   const dispatch = useAppDispatch();
-  const [login, { isLoading }] = useLoginUserMutation();
+  const [login, { isLoading, isSuccess, isError }] = useLoginUserMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigation.navigate('Home');
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (isError) {
+      dispatch(
+        displayToast({
+          message: 'Error al iniciar sesión',
+          type: 'error',
+        })
+      );
+    }
+  }, [isError]);
 
   const onSubmit: FormSubmitHandler<LoginSchemaType> = async (data) => {
     const user = await login(data).unwrap();
