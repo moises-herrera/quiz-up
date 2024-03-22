@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { SafeAreaView, View } from 'react-native';
+import { SafeAreaView, ScrollView, View } from 'react-native';
 import { styles } from './styles';
 
 interface WrapperBaseProps {
@@ -9,6 +9,8 @@ interface WrapperBaseProps {
 
 export const WrapperBase: FC<WrapperBaseProps> = ({ children, style }) => {
   return (
-    <SafeAreaView style={[styles.container, style]}>{children}</SafeAreaView>
+    <ScrollView contentContainerStyle={styles.container}>
+      <SafeAreaView style={style}>{children}</SafeAreaView>
+    </ScrollView>
   );
 };
