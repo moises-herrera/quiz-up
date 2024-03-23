@@ -16,10 +16,10 @@ export const FileUpload: FC<FileUploadProps> = ({ id, setFile }) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({});
 
-      if (!result.assets?.length) return;
+      if (!result.assets?.length || !result.output?.item(0)) return;
 
-      const file = result.assets[0];
-      const fileSize = file.size || 0;
+      const file = result.output?.item(0);
+      const fileSize = file?.size || 0;
       const maxSize = 5 * 1024 * 1024;
 
       if (fileSize > maxSize) {
@@ -27,8 +27,10 @@ export const FileUpload: FC<FileUploadProps> = ({ id, setFile }) => {
         return;
       }
 
-      setImageUrl(file.uri);
-      setFile(id, file.uri);
+      const fileUri = result.assets[0].uri;
+
+      setImageUrl(fileUri);
+      setFile(id, file);
     } catch (error) {
       throw error;
     }
