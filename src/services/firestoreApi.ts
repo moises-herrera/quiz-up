@@ -1,8 +1,9 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LoginSchemaType, SignUpSchemaType } from '../schemas/auth';
 import { loginUser, registerUser } from './user.service';
-import type { AuthInfo } from '../interfaces';
+import type { AuthInfo, Category } from '../interfaces';
 import { setAuthLoading } from '../redux/auth';
+import { getCategories } from './category.service';
 
 /**
  * Represents the firestore api.
@@ -30,7 +31,16 @@ export const firestoreApi = createApi({
       },
       invalidatesTags: ['User'],
     }),
+    getCategories: builder.query<Category[], void>({
+      async queryFn() {
+        return await getCategories();
+      },
+    }),
   }),
 });
 
-export const { useLoginUserMutation, useRegisterUserMutation } = firestoreApi;
+export const {
+  useLoginUserMutation,
+  useRegisterUserMutation,
+  useLazyGetCategoriesQuery,
+} = firestoreApi;
