@@ -1,21 +1,23 @@
 import { FC } from 'react';
-import { Text, View } from 'react-native';
+import { StyleProp, Text, View, ViewStyle } from 'react-native';
 import { styles } from './styles';
 
 interface FormControlProps {
-  label: string;
+  label?: string;
   children: React.ReactNode;
   fieldError?: string;
+  style?: StyleProp<ViewStyle>;
 }
 
 export const FormControl: FC<FormControlProps> = ({
   label,
   children,
   fieldError = '',
+  style = {},
 }) => {
   return (
-    <View>
-      <Text style={styles.label}>{label}</Text>
+    <View style={style}>
+      {label && <Text style={styles.label}>{label}</Text>}
       {children}
       {fieldError && <Text style={styles.error}>{fieldError}</Text>}
     </View>

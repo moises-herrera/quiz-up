@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
+  subTitle: { fontSize: 16, fontWeight: 'bold' },
   buttonsContainer: {
     marginTop: 16,
     width: '100%',

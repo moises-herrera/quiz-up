@@ -1,5 +1,5 @@
 import { TopMenu } from '../components/navigation';
-import { Home, QuizForm, Settings } from '../screens';
+import { CreateQuiz, Home, Settings } from '../screens';
 import { WrapperBase } from '../components/ui';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -38,7 +38,7 @@ export const ProtectedNavigator = () => {
         />
         <Tab.Screen
           name="CreateQuiz"
-          component={QuizForm}
+          component={CreateQuiz}
           options={{
             tabBarLabel: 'Crear',
             tabBarIcon: ({ color }) => (

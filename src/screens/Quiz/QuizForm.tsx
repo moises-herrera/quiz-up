@@ -1,8 +1,22 @@
 import { ScrollView, Text, View } from 'react-native';
-import { Button, FormControl, Input } from '../../components/ui';
+import {
+  Button,
+  FileUpload,
+  FormControl,
+  Input,
+  Select,
+} from '../../components/ui';
 import { QuizSchema, type QuizSchemaType } from '../../schemas/quiz';
-import { useForm } from '../../hooks';
+import { useAppDispatch, useForm } from '../../hooks';
 import { styles } from './styles';
+import { FormSubmitHandler, Quiz, SelectOption } from '../../interfaces';
+import { FC, useEffect, useState } from 'react';
+import { useLazyGetCategoriesQuery } from '../../services';
+import { parseCategoriesOptions } from '../../helpers';
+import { clearNewQuiz, setNewQuiz } from '../../redux/quiz';
+import { useNavigation } from '@react-navigation/native';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const initialForm: QuizSchemaType = {
   title: '',
@@ -12,13 +26,44 @@ const initialForm: QuizSchemaType = {
   questions: [],
 };
 
-export const QuizForm = () => {
+interface QuizFormProps {
+  initialValues?: QuizSchemaType;
+}
+
+export const QuizForm: FC<QuizFormProps> = ({ initialValues }) => {
+  const dispatch = useAppDispatch();
   const {
-    formState: { title, description },
+    formState: { title, description, image, category },
     onInputChange,
     onBlur,
     errors,
-  } = useForm<QuizSchemaType>(initialForm, QuizSchema);
+    handleSubmit,
+  } = useForm<QuizSchemaType>(initialValues ?? initialForm, QuizSchema);
+  const navigation = useNavigation();
+  const [getCategories] = useLazyGetCategoriesQuery();
+  const [categories, setCategories] = useState<SelectOption[]>([]);
+
+  const setCategoriesOptions = async () => {
+    const categories = await getCategories().unwrap();
+    setCategories(parseCategoriesOptions(categories));
+  };
+
+  useEffect(() => {
+    setCategoriesOptions();
+  }, []);
+
+  const onSubmit: FormSubmitHandler<QuizSchemaType> = (values) => {
+    const quiz = {
+      ...values,
+      id: uuidv4(),
+    } as Quiz;
+    dispatch(setNewQuiz(quiz));
+  };
+
+  const onCancel = (): void => {
+    dispatch(clearNewQuiz());
+    navigation.goBack();
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -45,13 +90,16 @@ export const QuizForm = () => {
         />
       </FormControl>
 
+      <FormControl label="Imagen" fieldError={errors?.image}>
+        <FileUpload id="image" file={image} setFile={onInputChange} />
+      </FormControl>
+
       <FormControl label="Categoría" fieldError={errors?.category}>
-        <Input
+        <Select
           id="category"
-          value={title}
+          value={category}
+          options={categories}
           onChange={onInputChange}
-          onBlur={onBlur}
-          hasError={!!errors?.category}
         />
       </FormControl>
 
@@ -67,14 +115,15 @@ export const QuizForm = () => {
             },
             buttonText: { color: 'black' },
           }}
-          onPress={() => {}}
+          onPress={onCancel}
         />
         <Button
-          label="Guardar"
+          label="Siguiente"
           style={{
             button: { width: '40%' },
           }}
-          onPress={() => {}}
+          disabled={false}
+          onPress={() => handleSubmit(onSubmit)}
         />
       </View>
     </ScrollView>
