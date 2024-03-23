@@ -5,6 +5,7 @@ import { styles } from './styles';
 interface InputProps {
   id: string;
   value?: string;
+  placeholder?: string;
   onChange: (id: string, value: string) => void;
   onBlur?: (id: string) => void;
   type?: KeyboardTypeOptions;
@@ -19,6 +20,7 @@ interface InputProps {
 export const Input: FC<InputProps> = ({
   id,
   value = '',
+  placeholder = '',
   onChange,
   onBlur,
   type,
@@ -34,6 +36,7 @@ export const Input: FC<InputProps> = ({
       id={id}
       nativeID={id}
       value={value}
+      placeholder={placeholder}
       onChangeText={(value) => onChange(id, value)}
       onBlur={() => onBlur && onBlur(id)}
       keyboardType={type}
