@@ -15,7 +15,7 @@ import { v4 as uuidv4 } from 'uuid';
  */
 export const uploadFile = async (
   folder: string,
-  file: File
+  file: Blob
 ): Promise<string> => {
   try {
     const fileId = uuidv4();
@@ -39,7 +39,7 @@ export const uploadFile = async (
  */
 export const updateFile = async (
   folder: string,
-  newFile: File,
+  newFile: Blob,
   oldFileUrl: string
 ): Promise<string> => {
   await deleteFile(oldFileUrl);
