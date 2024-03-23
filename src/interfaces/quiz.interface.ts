@@ -14,7 +14,7 @@ export interface Quiz {
   description?: string;
 
   /** Image URL of the quiz. */
-  image?: string;
+  image?: Blob | string;
 
   /** Category of the quiz. */
   category: string;
