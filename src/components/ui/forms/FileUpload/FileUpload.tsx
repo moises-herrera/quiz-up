@@ -1,36 +1,40 @@
 import { FC, useState } from 'react';
 import { View, Alert, Image, Pressable } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 
 interface FileUploadProps {
   id: string;
+  file?: string;
   setFile: (id: string, value: any) => void;
 }
 
-export const FileUpload: FC<FileUploadProps> = ({ id, setFile }) => {
-  const [imageUrl, setImageUrl] = useState<string>('');
+export const FileUpload: FC<FileUploadProps> = ({ id, file, setFile }) => {
+  const [imageUrl, setImageUrl] = useState<string>(file ?? '');
 
   const pickFile = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({});
 
-      if (!result.assets?.length || !result.output?.item(0)) return;
+      if (!result.assets?.length) return;
 
-      const file = result.output?.item(0);
-      const fileSize = file?.size || 0;
+      const document = result.assets[0];
+      const fileSize = document.size || 0;
       const maxSize = 5 * 1024 * 1024;
 
       if (fileSize > maxSize) {
         Alert.alert('Error', 'El archivo es muy grande');
         return;
       }
+      const buffer = await FileSystem.readAsStringAsync(document.uri, {
+        encoding: FileSystem.EncodingType.Base64,
+      });
+      const fileBase64 = `data:${document.mimeType};base64,${buffer}`;
 
-      const fileUri = result.assets[0].uri;
-
-      setImageUrl(fileUri);
-      setFile(id, file);
+      setImageUrl(fileBase64);
+      setFile(id, fileBase64);
     } catch (error) {
       throw error;
     }
