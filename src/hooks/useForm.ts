@@ -27,7 +27,7 @@ export const useForm = <T>(initialForm: T, schema: ZodType<any, any, any>) => {
     onSubmit && onSubmit(formValues);
   };
 
-  const onInputChange = (name: string, value: string) => {
+  const onInputChange = (name: string, value: string | T[keyof T]) => {
     const newFormState: T = { ...formState, [name]: value };
     setFormState(newFormState);
     validateFields({
