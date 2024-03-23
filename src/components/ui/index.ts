@@ -1,6 +1,5 @@
-export * from './Input';
+export * from './forms';
 export * from './Button';
-export * from './FormControl';
 export * from './WrapperBase';
 export * from './Toast';
 export * from './ToastList';
