@@ -15,11 +15,11 @@ interface ButtonProps {
   onPress: (event: GestureResponderEvent) => void;
   disabled?: boolean;
   isLoading?: boolean;
-  style?: {
+  style?: Partial<{
     button: StyleProp<ViewStyle>;
-    buttonText: StyleProp<ViewStyle>;
+    buttonText: StyleProp<any>;
     disabled: StyleProp<ViewStyle>;
-  };
+  }>;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -27,19 +27,28 @@ export const Button: FC<ButtonProps> = ({
   onPress,
   disabled = false,
   isLoading = false,
-  style = styles,
+  style,
 }) => {
   return (
     <Pressable
-      style={[style.button, (disabled || isLoading) && style.disabled]}
+      style={[
+        styles.button,
+        (disabled || isLoading) && styles.disabled,
+        style?.button,
+      ]}
       onPress={onPress}
       disabled={disabled || isLoading}
     >
       <View style={styles.content}>
         {isLoading && (
-          <ActivityIndicator size="small" color={styles.buttonText.color} />
+          <ActivityIndicator
+            size="small"
+            color={style?.buttonText?.color ?? styles.buttonText.color}
+          />
         )}
-        <Text style={style.buttonText}>{label}</Text>
+        <Text style={[styles.buttonText, style?.buttonText]}>
+          {label}
+        </Text>
       </View>
     </Pressable>
   );
