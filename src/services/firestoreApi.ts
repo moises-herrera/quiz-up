@@ -1,9 +1,10 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { LoginSchemaType, SignUpSchemaType } from '../schemas/auth';
 import { loginUser, registerUser } from './user.service';
-import type { AuthInfo, Category } from '../interfaces';
+import type { AuthInfo, Category, Quiz } from '../interfaces';
 import { setAuthLoading } from '../redux/auth';
 import { getCategories } from './category.service';
+import { createQuiz } from './quiz.service';
 
 /**
  * Represents the firestore api.
@@ -36,6 +37,11 @@ export const firestoreApi = createApi({
         return await getCategories();
       },
     }),
+    saveQuiz: builder.mutation<Quiz, Quiz>({
+      async queryFn(data) {
+        return await createQuiz(data);
+      },
+    }),
   }),
 });
 
@@ -43,4 +49,5 @@ export const {
   useLoginUserMutation,
   useRegisterUserMutation,
   useLazyGetCategoriesQuery,
+  useSaveQuizMutation,
 } = firestoreApi;
