@@ -1,9 +1,10 @@
 import { FC, useState } from 'react';
 import { View, Alert, Image, Pressable } from 'react-native';
 import * as DocumentPicker from 'expo-document-picker';
-import * as FileSystem from 'expo-file-system';
+
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
+import { convertFileToBase64 } from '../../../../helpers';
 
 interface FileUploadProps {
   id: string;
@@ -28,10 +29,7 @@ export const FileUpload: FC<FileUploadProps> = ({ id, file, setFile }) => {
         Alert.alert('Error', 'El archivo es muy grande');
         return;
       }
-      const buffer = await FileSystem.readAsStringAsync(document.uri, {
-        encoding: FileSystem.EncodingType.Base64,
-      });
-      const fileBase64 = `data:${document.mimeType};base64,${buffer}`;
+      const fileBase64 = await convertFileToBase64(document.uri, document.type);
 
       setImageUrl(fileBase64);
       setFile(id, fileBase64);
