@@ -40,7 +40,7 @@ export const Input: FC<InputProps> = ({
       secureTextEntry={secureTextEntry}
       style={[style, hasError && styles.errorInput]}
       autoCapitalize={autoCapitalize}
-      textAlignVertical="top"
+      textAlignVertical={multiline ? 'top' : 'center'}
       multiline={multiline}
       numberOfLines={
         multiline && numberOfLines ? numberOfLines : multiline ? 4 : 1
