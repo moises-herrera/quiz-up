@@ -2,6 +2,7 @@ import { FC } from 'react';
 import { View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { SelectOption } from '../../../../interfaces';
+import { styles } from './styles';
 
 interface SelectProps {
   id: string;
@@ -23,7 +24,7 @@ export const Select: FC<SelectProps> = ({
   };
 
   return (
-    <View id={id}>
+    <View id={id} style={styles.selectContainer}>
       <RNPickerSelect
         placeholder={{ label: placeholder, value: '' }}
         items={options}
