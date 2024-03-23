@@ -1,9 +1,11 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home, Login, Register } from '../screens';
+import { Login, Register } from '../screens';
 import { useAppSelector } from '../hooks';
 import { LoadingScreen } from '../components/ui';
+import { RootStackParamList } from '../interfaces';
+import { ProtectedNavigator } from './ProtectedNavigator';
 
-const Stack = createStackNavigator();
+const RootStack = createStackNavigator<RootStackParamList>();
 
 export const MainNavigator = () => {
   const status = useAppSelector(({ auth: { status } }) => status);
@@ -13,7 +15,7 @@ export const MainNavigator = () => {
   }
 
   return (
-    <Stack.Navigator
+    <RootStack.Navigator
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: 'white' },
@@ -22,13 +24,16 @@ export const MainNavigator = () => {
       <>
         {status !== 'authenticated' ? (
           <>
-            <Stack.Screen name="Login" component={Login} />
-            <Stack.Screen name="Register" component={Register} />
+            <RootStack.Screen name="Login" component={Login} />
+            <RootStack.Screen name="Register" component={Register} />
           </>
         ) : (
-          <Stack.Screen name="Home" component={Home} />
+          <RootStack.Screen
+            name="ProtectedNavigator"
+            component={ProtectedNavigator}
+          />
         )}
       </>
-    </Stack.Navigator>
+    </RootStack.Navigator>
   );
 };
