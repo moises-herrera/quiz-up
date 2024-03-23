@@ -29,7 +29,10 @@ export const FileUpload: FC<FileUploadProps> = ({ id, file, setFile }) => {
         Alert.alert('Error', 'El archivo es muy grande');
         return;
       }
-      const fileBase64 = await convertFileToBase64(document.uri, document.type);
+      const fileBase64 = await convertFileToBase64(
+        document.uri,
+        document.mimeType || ''
+      );
 
       setImageUrl(fileBase64);
       setFile(id, fileBase64);
