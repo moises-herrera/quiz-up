@@ -11,6 +11,8 @@ interface InputProps {
   style?: TextInput['props']['style'];
   autoCapitalize?: TextInput['props']['autoCapitalize'];
   secureTextEntry?: boolean;
+  multiline?: boolean;
+  numberOfLines?: number;
   hasError?: boolean;
 }
 
@@ -23,6 +25,8 @@ export const Input: FC<InputProps> = ({
   style = styles.input,
   autoCapitalize = 'none',
   secureTextEntry = false,
+  multiline = false,
+  numberOfLines,
   hasError = false,
 }) => {
   return (
@@ -36,6 +40,11 @@ export const Input: FC<InputProps> = ({
       secureTextEntry={secureTextEntry}
       style={[style, hasError && styles.errorInput]}
       autoCapitalize={autoCapitalize}
+      textAlignVertical="top"
+      multiline={multiline}
+      numberOfLines={
+        multiline && numberOfLines ? numberOfLines : multiline ? 4 : 1
+      }
     />
   );
 };

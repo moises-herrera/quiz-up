@@ -4,13 +4,13 @@ import { colors } from '../../../theme';
 export const styles = StyleSheet.create({
   input: {
     backgroundColor: 'white',
-    borderWidth: 1,
+    borderWidth: 0.5,
     borderRadius: 6,
     borderColor: colors.accent,
     paddingHorizontal: 8,
     paddingVertical: 4,
   },
   errorInput: {
-    borderColor: colors.error,
+    borderColor: colors.error.primary,
   },
 });
