@@ -2,3 +2,8 @@ export * from './types';
 export * from './user.interface';
 export * from './auth-info.interface';
 export * from './toast.interface';
+export * from './question.interface';
+export * from './quiz.interface';
+export * from './question-answer.interface';
+export * from './select-option.interface';
+export * from './category.interface';
