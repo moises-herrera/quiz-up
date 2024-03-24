@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ScrollView, Text, View } from 'react-native';
 import { styles } from './styles';
-import { Button, Dialog, FormControl, Input } from '../../components/ui';
+import { Button, Input } from '../../components/ui';
 import { useAppDispatch, useAppSelector, useForm } from '../../hooks';
 import { setCurrentFormStep } from '../../redux/quiz';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,32 +12,17 @@ import {
   QuestionAnswer,
   Quiz,
 } from '../../interfaces';
-import 'react-native-get-random-values';
-import { v4 as uuidv4 } from 'uuid';
 import { QuestionSchemaType, QuestionsSchema } from '../../schemas/quiz';
-import { colors } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 import { useSaveQuizMutation } from '../../services';
 import { displayToast } from '../../redux/ui';
+import { getNewQuestion, getAnswer } from '../../helpers';
+import { AnswersDialog } from './AnswersDialog';
 
 export const QuizQuestionsForm = () => {
   const navigation = useNavigation<NavigationProps>();
   const dispatch = useAppDispatch();
   const quiz = useAppSelector(({ quiz: { newQuiz } }) => newQuiz);
-  const quizId = quiz?.id ?? '';
-
-  const getNewQuestion = (): Question => {
-    return {
-      id: uuidv4(),
-      question: '',
-      options: [],
-      quizId,
-    };
-  };
-
-  const getAnswer = (): QuestionAnswer => {
-    return { description: '', isCorrect: false };
-  };
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([getNewQuestion()]);
@@ -70,23 +55,10 @@ export const QuizQuestionsForm = () => {
 
   const openAnswersModal = (questionId: string) => {
     setQuestionActive(questionId);
+    if (formState[questionId].options.length) {
+      setAnswers(formState[questionId].options);
+    }
     setIsDialogOpen(true);
-  };
-
-  const addAnswer = () => {
-    setAnswers((answers) => [...answers, getAnswer()]);
-  };
-
-  const removeAnswer = (index: number) => {
-    setAnswers((answers) => answers.filter((_, i) => i !== index));
-  };
-
-  const markAsCorrect = (index: number) => {
-    setAnswers((answers) =>
-      answers.map((answer, i) =>
-        i === index ? { ...answer, isCorrect: !answer.isCorrect } : answer
-      )
-    );
   };
 
   const onCloseAnswersModal = () => {
@@ -238,90 +210,12 @@ export const QuizQuestionsForm = () => {
         </View>
       </ScrollView>
 
-      <Dialog isOpen={isDialogOpen} onClose={onCloseAnswersModal}>
-        <Text style={styles.subTitle}>Opciones</Text>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'column',
-            gap: 12,
-            justifyContent: 'center',
-          }}
-        >
-          {answers.map((answer, index) => (
-            <View
-              key={index}
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}
-            >
-              <View
-                style={{
-                  width: '90%',
-                }}
-              >
-                <Input
-                  id={`answer-${index}`}
-                  value={answer.description}
-                  onChange={(_id, value) => {
-                    setAnswers((answers) =>
-                      answers.map((answer, i) =>
-                        i === index ? { ...answer, description: value } : answer
-                      )
-                    );
-                  }}
-                  hasError={!answer.description.trim()}
-                  placeholder="Escribe una respuesta"
-                  multiline
-                  numberOfLines={2}
-                />
-              </View>
-              <View
-                style={{
-                  width: '15%',
-                  flexDirection: 'column',
-                  gap: 6,
-                  alignItems: 'center',
-                }}
-              >
-                <Ionicons
-                  name="checkmark"
-                  size={24}
-                  color={answer.isCorrect ? colors.success.primary : 'black'}
-                  onPress={() => markAsCorrect(index)}
-                />
-                <Ionicons
-                  name="close-circle-outline"
-                  size={24}
-                  color="black"
-                  style={{ opacity: answers.length === 2 ? 0.4 : 1 }}
-                  disabled={answers.length === 2}
-                  onPress={() => removeAnswer(index)}
-                />
-              </View>
-            </View>
-          ))}
-
-          <Button
-            label="Agregar opción"
-            style={{
-              button: {
-                height: 40,
-                width: '100%',
-                backgroundColor: 'white',
-                borderWidth: 0.5,
-                borderColor: 'black',
-                padding: 0,
-              },
-              buttonText: { color: 'black' },
-            }}
-            disabled={answers.length >= 4}
-            onPress={addAnswer}
-          />
-        </View>
-      </Dialog>
+      <AnswersDialog
+        isOpen={isDialogOpen}
+        onClose={onCloseAnswersModal}
+        answers={answers}
+        setAnswers={setAnswers}
+      />
     </>
   );
 };
