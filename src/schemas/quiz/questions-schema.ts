@@ -14,7 +14,6 @@ export const QuestionsSchema = z.record(
         isCorrect: z.boolean().default(false),
       })
     ),
-    quizId: z.string(),
   })
 );
 
