@@ -20,9 +20,9 @@ export const createQuiz = async (quiz: Quiz) => {
       ...data,
       image: imageUrl,
     });
-    const questionPromises = questions.map((question) => {
+    const questionPromises = questions.map(({ id, ...question }) => {
       return setDoc(
-        doc(firebaseDatabase, 'quizzes', id, 'questions', question.id),
+        doc(firebaseDatabase, 'quizzes', id, 'questions', id),
         question
       );
     });
