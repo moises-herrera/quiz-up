@@ -12,7 +12,4 @@ export interface Question {
 
   /** List of possible answers. */
   options: QuestionAnswer[];
-
-  /** Quiz's id to which the question belongs. */
-  quizId: string;
 }
