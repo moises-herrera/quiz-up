@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
   card: {
     width: 330,
-    height: 330,
+    height: 350,
     flexDirection: 'column',
     justifyContent: 'space-between',
     padding: 12,
