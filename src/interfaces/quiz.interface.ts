@@ -19,8 +19,11 @@ export interface Quiz {
   /** Image uploaded of the quiz. */
   fileUploaded?: Blob | string;
 
-  /** Category of the quiz. */
+  /** Category's id of the quiz. */
   category: string;
+
+  /** Category label of the quiz. */
+  categoryLabel: string;
 
   /** Questions of the quiz. */
   questions: Question[];
