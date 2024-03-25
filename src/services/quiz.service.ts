@@ -1,4 +1,9 @@
-import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
+import {
+  collection,
+  doc,
+  getDocs,
+  setDoc,
+} from 'firebase/firestore';
 import { APIStandardResponse, Quiz } from '../interfaces';
 import { firebaseDatabase } from '../config/firebase';
 import { handleError } from '../helpers';
@@ -11,19 +16,27 @@ import { uploadFile } from './file.service';
  */
 export const getQuizzes = async (): Promise<APIStandardResponse<Quiz[]>> => {
   try {
-    const quizzes = await getDocs(collection(firebaseDatabase, 'quizzes'));
+    const [quizzes, categories] = await Promise.all([
+      getDocs(collection(firebaseDatabase, 'quizzes')),
+      getDocs(collection(firebaseDatabase, 'categories')),
+    ]);
     const response: APIStandardResponse<Quiz[]> = {
       data: quizzes.docs.map((doc) => {
+        const quizData = doc.data();
+
         return {
           id: doc.id,
-          ...doc.data(),
+          ...quizData,
+          category: categories.docs
+            .find(({ id }) => id === quizData.category)
+            ?.data().label,
         } as Quiz;
       }),
     };
 
     return response;
   } catch (error) {
-    const message = handleError(error, 'Error al crear el quiz');
+    const message = handleError(error, 'Error al obtener la lista');
     return { error: message };
   }
 };
