@@ -10,7 +10,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   token: null,
-  status: 'unauthenticated',
+  status: 'authenticated',
 };
 
 export const authSlice = createSlice({
@@ -28,8 +28,13 @@ export const authSlice = createSlice({
       state.token = token;
       state.status = 'authenticated';
     },
+    logout: (state) => {
+      state.user = null;
+      state.token = null;
+      state.status = 'unauthenticated';
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setAuthLoading, setCredentials } = authSlice.actions;
+export const { setAuthLoading, setCredentials, logout } = authSlice.actions;
