@@ -1,3 +1,5 @@
+import { MD3LightTheme as DefaultTheme } from 'react-native-paper';
+
 export const colors = {
   primary: '#fc9e37',
   secondary: '#fff',
@@ -14,5 +16,13 @@ export const colors = {
   gray: {
     primary: '#f2f2f2',
     secondary: '#fafafa',
+  },
+};
+
+export const theme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    secondaryContainer: 'transparent',
   },
 };
