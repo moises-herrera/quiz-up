@@ -4,7 +4,7 @@ import { loginUser, registerUser } from './user.service';
 import type { AuthInfo, Category, Quiz } from '../interfaces';
 import { setAuthLoading } from '../redux/auth';
 import { getCategories } from './category.service';
-import { createQuiz, getQuizzes } from './quiz.service';
+import { createQuiz, deleteQuiz, getQuizzes } from './quiz.service';
 
 /**
  * Represents the firestore api.
@@ -47,6 +47,11 @@ export const firestoreApi = createApi({
         return await createQuiz(data);
       },
     }),
+    deleteQuiz: builder.mutation<string, string>({
+      async queryFn(id) {
+        return await deleteQuiz(id);
+      },
+    }),
   }),
 });
 
@@ -56,4 +61,5 @@ export const {
   useLazyGetCategoriesQuery,
   useSaveQuizMutation,
   useLazyGetQuizzesQuery,
+  useDeleteQuizMutation,
 } = firestoreApi;
