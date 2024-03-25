@@ -17,8 +17,11 @@ export const quizSlice = createSlice({
   name: 'quiz',
   initialState,
   reducers: {
-    addQuiz: (state, action) => {
-      state.quizzes.push(action.payload);
+    setQuizzes: (state, { payload }: PayloadAction<Quiz[]>) => {
+      state.quizzes = payload;
+    },
+    addQuiz: (state, { payload }: PayloadAction<Quiz>) => {
+      state.quizzes.push(payload);
     },
     setNewQuiz: (state, { payload }: PayloadAction<Partial<Quiz>>) => {
       state.newQuiz = payload as Quiz;
