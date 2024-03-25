@@ -1,9 +1,4 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  setDoc,
-} from 'firebase/firestore';
+import { collection, doc, getDocs, setDoc } from 'firebase/firestore';
 import { APIStandardResponse, Quiz } from '../interfaces';
 import { firebaseDatabase } from '../config/firebase';
 import { handleError } from '../helpers';
@@ -23,13 +18,14 @@ export const getQuizzes = async (): Promise<APIStandardResponse<Quiz[]>> => {
     const response: APIStandardResponse<Quiz[]> = {
       data: quizzes.docs.map((doc) => {
         const quizData = doc.data();
+        const category = categories.docs
+          .find(({ id }) => id === quizData.category)
+          ?.data().label;
 
         return {
           id: doc.id,
           ...quizData,
-          category: categories.docs
-            .find(({ id }) => id === quizData.category)
-            ?.data().label,
+          category,
         } as Quiz;
       }),
     };
