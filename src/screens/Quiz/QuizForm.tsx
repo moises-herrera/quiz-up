@@ -7,7 +7,7 @@ import {
   Select,
 } from '../../components/ui';
 import { QuizSchema, type QuizSchemaType } from '../../schemas/quiz';
-import { useAppDispatch, useForm } from '../../hooks';
+import { useAppDispatch, useAppSelector, useForm } from '../../hooks';
 import { styles } from './styles';
 import { FormSubmitHandler, Quiz, SelectOption } from '../../interfaces';
 import { FC, useEffect, useState } from 'react';
@@ -32,6 +32,7 @@ interface QuizFormProps {
 
 export const QuizForm: FC<QuizFormProps> = ({ initialValues }) => {
   const dispatch = useAppDispatch();
+  const username = useAppSelector(({ auth: { user } }) => user?.username);
   const {
     formState: { title, description, image, category },
     onInputChange,
@@ -56,6 +57,7 @@ export const QuizForm: FC<QuizFormProps> = ({ initialValues }) => {
     const quiz = {
       ...values,
       id: uuidv4(),
+      user: username,
     } as Quiz;
     dispatch(setNewQuiz(quiz));
   };

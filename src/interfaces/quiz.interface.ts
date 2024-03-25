@@ -16,12 +16,15 @@ export interface Quiz {
   /** Image URL of the quiz. */
   image?: Blob | string;
 
+  /** Image uploaded of the quiz. */
+  fileUploaded?: Blob | string;
+
   /** Category of the quiz. */
   category: string;
 
   /** Questions of the quiz. */
   questions: Question[];
 
-  /** User's id of the quiz creator. */
-  userId: string;
+  /** User's name of the quiz creator. */
+  user: string;
 }
