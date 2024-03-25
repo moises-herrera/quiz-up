@@ -3,14 +3,18 @@ import { MainNavigator } from './MainNavigator';
 import { Provider } from 'react-redux';
 import { store } from '../redux/store';
 import { ToastList } from '../components/ui';
+import { PaperProvider } from 'react-native-paper';
+import { theme } from '../theme';
 
 export const AppNavigation = () => {
   return (
     <NavigationContainer>
-      <Provider store={store}>
-        <MainNavigator />
-        <ToastList />
-      </Provider>
+      <PaperProvider theme={theme}>
+        <Provider store={store}>
+          <MainNavigator />
+          <ToastList />
+        </Provider>
+      </PaperProvider>
     </NavigationContainer>
   );
 };

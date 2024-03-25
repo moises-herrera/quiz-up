@@ -13,7 +13,7 @@ import { FormSubmitHandler, Quiz, SelectOption } from '../../interfaces';
 import { FC, useEffect, useState } from 'react';
 import { useLazyGetCategoriesQuery } from '../../services';
 import { parseCategoriesOptions } from '../../helpers';
-import { clearNewQuiz, setNewQuiz } from '../../redux/quiz';
+import { clearNewQuiz, setActiveQuiz } from '../../redux/quiz';
 import { useNavigation } from '@react-navigation/native';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
@@ -59,7 +59,7 @@ export const QuizForm: FC<QuizFormProps> = ({ initialValues }) => {
       id: uuidv4(),
       user: username,
     } as Quiz;
-    dispatch(setNewQuiz(quiz));
+    dispatch(setActiveQuiz({ quiz, currentFormStep: 1 }));
   };
 
   const onCancel = (): void => {

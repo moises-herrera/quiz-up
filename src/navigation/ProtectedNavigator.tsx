@@ -1,18 +1,14 @@
 import { TopMenu } from '../components/navigation';
-import { CreateQuiz, Home, Settings } from '../screens';
+import { QuizSettings, Home, Settings } from '../screens';
 import { WrapperBase } from '../components/ui';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { MaterialIcons } from '@expo/vector-icons';
 import { colors } from '../theme';
-import { useTheme } from 'react-native-paper';
 import { TabParamList } from '../interfaces';
 
 const Tab = createMaterialBottomTabNavigator<TabParamList>();
 
 export const ProtectedNavigator = () => {
-  const theme = useTheme();
-  theme.colors.secondaryContainer = 'transparent';
-
   return (
     <WrapperBase
       style={{
@@ -37,8 +33,8 @@ export const ProtectedNavigator = () => {
           }}
         />
         <Tab.Screen
-          name="CreateQuiz"
-          component={CreateQuiz}
+          name="QuizSettings"
+          component={QuizSettings}
           options={{
             tabBarLabel: 'Crear',
             tabBarIcon: ({ color }) => (

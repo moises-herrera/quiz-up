@@ -2,7 +2,7 @@ import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 
 export type TabParamList = {
   Home: undefined;
-  CreateQuiz: undefined;
+  QuizSettings: undefined;
   Settings: undefined;
 };
 

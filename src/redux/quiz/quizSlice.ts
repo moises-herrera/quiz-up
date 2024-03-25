@@ -3,13 +3,13 @@ import { Quiz } from '../../interfaces';
 
 interface QuizState {
   quizzes: Quiz[];
-  newQuiz: Quiz | null;
+  quizActive: Quiz | null;
   currentFormStep: number;
 }
 
 const initialState: QuizState = {
   quizzes: [],
-  newQuiz: null,
+  quizActive: null,
   currentFormStep: 0,
 };
 
@@ -23,12 +23,20 @@ export const quizSlice = createSlice({
     addQuiz: (state, { payload }: PayloadAction<Quiz>) => {
       state.quizzes.push(payload);
     },
-    setNewQuiz: (state, { payload }: PayloadAction<Partial<Quiz>>) => {
-      state.newQuiz = payload as Quiz;
-      state.currentFormStep += 1;
+    removeQuiz: (state, { payload }: PayloadAction<string>) => {
+      state.quizzes = state.quizzes.filter((quiz) => quiz.id !== payload);
+    },
+    setActiveQuiz: (
+      state,
+      {
+        payload,
+      }: PayloadAction<{ quiz: Partial<Quiz>; currentFormStep?: number }>
+    ) => {
+      state.quizActive = payload.quiz as Quiz;
+      state.currentFormStep = payload.currentFormStep ?? 0;
     },
     clearNewQuiz: (state) => {
-      state.newQuiz = null;
+      state.quizActive = null;
       state.currentFormStep = 0;
     },
     setCurrentFormStep: (state, { payload }: PayloadAction<number>) => {
@@ -38,5 +46,11 @@ export const quizSlice = createSlice({
 });
 
 // Action creators are generated for each case reducer function
-export const { addQuiz, setNewQuiz, clearNewQuiz, setCurrentFormStep } =
-  quizSlice.actions;
+export const {
+  addQuiz,
+  setQuizzes,
+  removeQuiz,
+  setActiveQuiz,
+  clearNewQuiz,
+  setCurrentFormStep,
+} = quizSlice.actions;

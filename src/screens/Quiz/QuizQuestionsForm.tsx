@@ -22,7 +22,7 @@ import { AnswersDialog } from './AnswersDialog';
 export const QuizQuestionsForm = () => {
   const navigation = useNavigation<NavigationProps>();
   const dispatch = useAppDispatch();
-  const quiz = useAppSelector(({ quiz: { newQuiz } }) => newQuiz);
+  const quiz = useAppSelector(({ quiz: { quizActive: newQuiz } }) => newQuiz);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([getNewQuestion()]);

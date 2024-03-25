@@ -3,16 +3,16 @@ import { QuizQuestionsForm } from './QuizQuestionsForm';
 import { useAppSelector } from '../../hooks';
 import { QuizSchemaType } from '../../schemas/quiz';
 
-export const CreateQuiz = () => {
+export const QuizSettings = () => {
   const currentFormStep = useAppSelector(
     ({ quiz: { currentFormStep } }) => currentFormStep
   );
-  const newQuiz = useAppSelector(({ quiz: { newQuiz } }) => newQuiz);
+  const quizActive = useAppSelector(({ quiz: { quizActive } }) => quizActive);
 
   return (
     <>
       {currentFormStep === 0 && (
-        <QuizForm initialValues={newQuiz as QuizSchemaType} />
+        <QuizForm initialValues={quizActive as QuizSchemaType} />
       )}
       {currentFormStep === 1 && <QuizQuestionsForm />}
     </>
