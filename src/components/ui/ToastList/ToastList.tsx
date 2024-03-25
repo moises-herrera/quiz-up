@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../../hooks';
-import { Toast } from '..';
+import { Toast } from '../Toast';
 import { closeToast } from '../../../redux/ui';
 import { View } from 'react-native';
 import { styles } from './styles';
