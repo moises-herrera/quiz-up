@@ -6,7 +6,7 @@ import {
   setDoc,
   updateDoc,
 } from 'firebase/firestore';
-import { APIStandardResponse, Quiz } from '../interfaces';
+import { APIStandardResponse, Question, Quiz } from '../interfaces';
 import { firebaseDatabase } from '../config/firebase';
 import { handleError } from '../helpers';
 import { updateFile, uploadFile } from './file.service';
@@ -148,6 +148,36 @@ export const deleteQuiz = async (
     return { data: 'Quiz eliminado correctamente' };
   } catch (error) {
     const message = handleError(error, 'Error al eliminar el quiz');
+    return { error: message };
+  }
+};
+
+/**
+ * Gets the questions of a quiz.
+ *
+ * @param id The quiz id.
+ * @returns A promise with the questions data.
+ */
+export const getQuizQuestions = async (
+  id: string
+): Promise<APIStandardResponse<Question[]>> => {
+  try {
+    const questions = await getDocs(
+      collection(firebaseDatabase, 'quizzes', id, 'questions')
+    );
+    const response: APIStandardResponse<Question[]> = {
+      data: questions.docs.map(
+        (doc) =>
+          ({
+            id: doc.id,
+            ...doc.data(),
+          } as Question)
+      ),
+    };
+
+    return response;
+  } catch (error) {
+    const message = handleError(error, 'Error al obtener las preguntas');
     return { error: message };
   }
 };

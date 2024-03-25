@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Image, Text, View } from 'react-native';
-import { NavigationProps, Quiz } from '../../../interfaces';
+import { NavigationProps, Question, Quiz } from '../../../interfaces';
 import { styles } from './styles';
 import { Button } from '../../ui';
 import { Entypo } from '@expo/vector-icons';
@@ -10,6 +10,7 @@ import { removeQuiz, setActiveQuiz } from '../../../redux/quiz';
 import { Menu } from 'react-native-paper';
 import { useDeleteQuizMutation } from '../../../services';
 import { displayToast } from '../../../redux/ui';
+import { getQuizQuestions } from '../../../services/quiz.service';
 
 export const QuizCard: FC<Quiz> = (quiz) => {
   const { title, image, categoryLabel, user } = quiz;
@@ -19,8 +20,15 @@ export const QuizCard: FC<Quiz> = (quiz) => {
   const [isMenuVisible, setIsMenuVisible] = useState<boolean>(false);
   const [deleteQuiz, { isSuccess, isError }] = useDeleteQuizMutation();
 
-  const handleEdit = () => {
-    dispatch(setActiveQuiz({ quiz }));
+  const handleEdit = async () => {
+    const response = await getQuizQuestions(quiz.id);
+    const quizData = {
+      quiz: {
+        ...quiz,
+        questions: (response as { data: Question[] }).data,
+      },
+    };
+    dispatch(setActiveQuiz(quizData));
     navigation.navigate('QuizSettings');
   };
 
@@ -53,7 +61,7 @@ export const QuizCard: FC<Quiz> = (quiz) => {
 
   return (
     <View style={styles.card}>
-      {
+      {currentUser?.username === user && (
         <View style={{ alignSelf: 'flex-end' }}>
           <Menu
             style={{ marginTop: 30 }}
@@ -74,7 +82,7 @@ export const QuizCard: FC<Quiz> = (quiz) => {
             <Menu.Item title="Eliminar" onPress={handleDelete} />
           </Menu>
         </View>
-      }
+      )}
       <View style={{ gap: 6 }}>
         {
           <Image

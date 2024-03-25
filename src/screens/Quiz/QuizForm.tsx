@@ -124,7 +124,6 @@ export const QuizForm: FC<QuizFormProps> = ({ initialValues }) => {
           style={{
             button: { width: '40%' },
           }}
-          disabled={false}
           onPress={() => handleSubmit(onSubmit)}
         />
       </View>
