@@ -7,7 +7,7 @@ import { SignUpSchema, SignUpSchemaType } from '../../schemas/auth';
 import { styles } from './styles';
 import type { FormSubmitHandler } from '../../interfaces';
 import { useRegisterUserMutation } from '../../services';
-import { setCredentials } from '../../redux/auth';
+import { logout, setCredentials } from '../../redux/auth';
 import { displayToast } from '../../redux/ui';
 
 interface RegisterProps extends StackScreenProps<any, any> {}
@@ -60,6 +60,7 @@ export const Register: FC<RegisterProps> = ({ navigation }) => {
           type: 'error',
         })
       );
+      dispatch(logout());
     }
   }, [isError]);
 

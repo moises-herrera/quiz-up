@@ -7,7 +7,7 @@ import { LoginSchema, LoginSchemaType } from '../../schemas/auth';
 import { styles } from './styles';
 import { FormSubmitHandler } from '../../interfaces';
 import { useLoginUserMutation } from '../../services';
-import { setCredentials } from '../../redux/auth';
+import { logout, setCredentials } from '../../redux/auth';
 import { displayToast } from '../../redux/ui';
 
 interface LoginProps extends StackScreenProps<any, any> {}
@@ -42,6 +42,7 @@ export const Login: FC<LoginProps> = ({ navigation }) => {
           type: 'error',
         })
       );
+      dispatch(logout());
     }
   }, [isError]);
 
